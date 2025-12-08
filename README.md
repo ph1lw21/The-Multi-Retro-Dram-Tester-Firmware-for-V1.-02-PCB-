@@ -22,7 +22,7 @@ Do Not Connect The Multi Retro Dram Tester to a USB port whilst powered from the
 OVERVIEW
 -----------
 This device is a comprehensive tester for vintage Dynamic RAM (DRAM) chips 
-ranging from the 1970s (4116) to the 1990s (514400). It uses a Raspberry Pi 
+ranging from the 1970s (4116) to the 1990s (71C4400). It uses a Raspberry Pi 
 Pico (RP2040) to generate precise timing signals and verify memory integrity.
 
 SOCKET SELECTION (IMPORTANT!)
@@ -34,7 +34,7 @@ the chip or the tester.
    Use this for all other chips (single +5V supply).
    * 16-Pin: 3732, 4532, 4164, 41256, HM4816, 4532, 3732
    * 18-Pin: 4464, 4416, 411000
-   * 20-Pin: 44256, 514400
+   * 20-Pin: 44256, 71C4400
 
 >> ZIF SOCKET 2 (SK2) - MULTI-VOLTAGE <<
    Use this for chips requiring -5V, +5V, and +12V.
