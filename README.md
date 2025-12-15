@@ -174,9 +174,8 @@ Cycle Delay:
 ------------
 Sets the pause duration between test loops (e.g., wait 1 second before starting the next pass).
 
-3. Visual & UI Settings (*** Turn off the Bargraph and the Phase Messages for faster testing!***)
+3. Visual & UI Settings (*** Turn off the Phase Messages for faster testing!***)
 -----------------------
-Bargraph: Toggles the progress bar at the bottom of the screen.
 Phase Msgs: Toggles the display of specific sub-steps (e.g., "March C- (w0)"). Turning this off speeds up the test slightly.
 Result Size:
 Small: Shows detailed statistics (Address, Expected vs. Actual data).
@@ -207,7 +206,3 @@ Display Driver: Via PC command, toggle between SSD1306 and SH1106 drivers for th
 TROUBLESHOOTING:
 ----------------
 * "OFFLINE": Check USB cable and ensure correct COM port is selected.
-* "Pass=0, Fail=0" after start: Check connection.
-* Chip getting hot: STOP IMMEDIATELY. You may have inserted it backward 
-  or in the wrong socket.
-
