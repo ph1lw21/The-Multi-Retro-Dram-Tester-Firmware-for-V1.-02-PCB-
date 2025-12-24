@@ -47,33 +47,27 @@ The Main DRAM Test Algorithms
 -----------------------------
 These are the selectable tests that stress the internal memory cells.
 
-March B:
+March B:+ Ret (Retention):
 --------
 Type: Standard Industry Algorithm (Finite State Machine).
 Complexity: Low/Medium.
 What it does: Writes 0s to the whole chip. Then walks through reading 0/writing 1, then reading 1/writing 0.
 Best for: Detecting simple "Stuck-at" faults (a bit that is permanently 0 or 1) and some simple coupling faults. Faster than March C-.
 
-March C- (Minus):
+March C- (Minus):+ Ret (Retention):
 -----------------
 Type: Standard Industry Algorithm.
 Complexity: High (The "Gold Standard" for DRAM).
 What it does: A complex sequence that walks up and down the memory array, reading and writing inverted data multiple times (e.g., Read 0, Write 1, Read 1, Write 0).
 Best for: Detecting Stuck-at faults, Transition faults (cell fails to change from 0->1 or 1->0), Coupling faults (writing to cell A changes cell B), and Address Decoder faults. This is the recommended default test.
 
-March C- Mix:
+March C- Mix: (Retention):
 -------------
 Type: Timing Stress Test.
 What it does: Runs the March C- algorithm twice.
 First run: Uses Standard Page Mode (slower, standard timing).
 Second run: Uses Fast Page Mode (FPM) (keeps RAS low, toggles CAS rapidly).
 Best for: Detecting chips that are logically functional but fail when accessed at high speeds (timing violation).
-
-Checkerboard:
--------------
-Type: Pattern Test.
-What it does: Writes a logical checkerboard pattern (010101...) to the memory array, verifies it, then writes the inverse pattern (101010...) and verifies it.
-Best for: Testing Cell-to-Cell interference. Because a capacitor holding a '1' is physically next to a capacitor holding a '0', this tests for leakage between adjacent cells on the silicon die.
 
 Checkerboard + Ret (Retention):
 -------------------------------
@@ -169,7 +163,7 @@ Keeps the chip powered between loops (faster testing).
 
 Retention Time:
 ---------------
-Presets how long the tester waits during "Checkerboard + Ret" to detect weak bits that lose charge. 
+Presets how long the tester waits during retention tests to detect weak bits that lose charge. 
 DRAM retention time refers to the maximum time that data can be reliably stored in a DRAM cell before it needs to be refreshed.
 
 Cycle Delay:
