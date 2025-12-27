@@ -145,6 +145,7 @@ Test Algorithm: Selects the specific logic used (March B, March C-, Checkerboard
 Access Mode:
 ------------
 Std Page: Uses standard RAS/CAS timing (compatible with all chips).
+
 Fast Page: Uses Fast Page Mode (RAS stays low, CAS toggles).
 
 Loop Count:
