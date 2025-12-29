@@ -4,7 +4,7 @@ You must have a USB-C to whatever USB (A or C) interface is on your PC
 
 Connect the Multi Retro Dram Tester to your PC via the above cable.
 
-Either press and hold the BOOT button whilst pressing and releasing the reset button on the RP2040 PCB
+Either press and hold the BOOT button whilst pressing and releasing the reset button on the Raspberry Pi Pico PCB
 
 Or hold down the BOOT button whilst connecting your Multi Retro Dram Tester to your PC
 
@@ -23,7 +23,7 @@ OVERVIEW
 -----------
 This device is a comprehensive tester for vintage Dynamic RAM (DRAM) chips 
 ranging from the 1970s (4116) to the 1990s (71C4400). It uses a Raspberry Pi 
-Pico (RP2040) to generate precise timing signals and verify memory integrity.
+Pico to generate precise timing signals and verify memory integrity.
 
 SOCKET SELECTION (IMPORTANT!)
 --------------------------------
