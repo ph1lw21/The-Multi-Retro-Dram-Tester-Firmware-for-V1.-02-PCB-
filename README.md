@@ -4,7 +4,7 @@ You must have a USB-C to whatever USB (A or C) interface is on your PC
 
 Connect the Multi Retro Dram Tester to your PC via the above cable.
 
-Either press and hold the BOOT button whilst pressing and releasing the reset button on the Microprocessor PCB
+Either press and hold the BOOT button whilst pressing and releasing the reset button on the Microcontroller PCB
 
 Or hold down the BOOT button whilst connecting your Multi Retro Dram Tester to your PC
 
