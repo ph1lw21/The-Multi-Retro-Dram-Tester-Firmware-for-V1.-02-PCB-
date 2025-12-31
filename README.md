@@ -1,4 +1,4 @@
-Download the latest frimware from releases ----->
+Download the latest firmware from releases ----->
 
 To update the code for The Multi Retro Dram Tester on a Windows 10/11 PC
 
