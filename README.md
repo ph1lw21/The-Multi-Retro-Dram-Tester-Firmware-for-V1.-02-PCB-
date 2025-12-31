@@ -1,3 +1,5 @@
+Download the latest frimware from releases ----->
+
 To update the code for The Multi Retro Dram Tester on a Windows 10/11 PC
 
 You must have a USB-C to whatever USB (A or C) interface is on your PC
