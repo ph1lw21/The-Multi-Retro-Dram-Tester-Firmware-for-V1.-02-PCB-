@@ -198,6 +198,8 @@ Each row is charged, delayed for an exact time, and verified independently.
 **Description**  
 User-configurable combination of multiple algorithms for maximum stress testing.
 
+### Buzzer/Audio Settings
+User configurable sounds for Pass / Fail
 ---
 
 ## CONFIGURATION OPTIONS
