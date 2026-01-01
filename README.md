@@ -1,212 +1,314 @@
-Download the latest firmware from releases ----->
+# MULTI RETRO DRAM TESTER  
+## USER MANUAL
 
-To update the code for The Multi Retro Dram Tester on a Windows 10/11 PC
+---
 
-You must have a USB-C to whatever USB (A or C) interface is on your PC
+## Firmware Update (Windows 10 / 11)
 
-Connect the Multi Retro Dram Tester to your PC via the above cable.
+### Download & Flash Instructions
 
-Either press and hold the BOOT button whilst pressing and releasing the reset button on the Microcontroller PCB
+1. Download the **latest firmware (.UF2)** from the **Releases** section.
+2. Use a **USB-C to USB-A or USB-C cable** (depending on your PC).
+3. Connect the **Multi Retro DRAM Tester** to your PC.
 
-Or hold down the BOOT button whilst connecting your Multi Retro Dram Tester to your PC
+### Enter Bootloader Mode
 
-A new drive should pop up on your PC called RPI-RP2 (Drive Name:)
+Use **either** method below:
 
-Drag the UF2 file onto this drive and the code will automatically upload and reboot the Multi Retro Dram Tester.
+- **Method 1**  
+  Hold the **BOOT** button → Press and release **RESET**
 
-MULTI RETRO DRAM TESTER - USER MANUAL
-========================================
+- **Method 2**  
+  Hold **BOOT** while connecting the USB cable
 
-******************************************************************************************************
-Do Not Connect The Multi Retro Dram Tester to a USB port whilst powered from the 2.1mm DC Jack Socket!
-******************************************************************************************************
+4. A new removable drive will appear named:
 
-OVERVIEW
------------
-This device is a comprehensive tester for vintage Dynamic RAM (DRAM) chips 
-ranging from the 1970s (4116) to the 1990s (514400). It uses a Dual-core ARM Cortex-MO+ Processor to generate precise timing signals and verify memory integrity.
+RPI-RP2
 
-SOCKET SELECTION (IMPORTANT!)
---------------------------------
-The tester has 2 distinct ZIF sockets. You MUST use the correct one to avoid damaging
-the chip or the tester.
+5. Drag and drop the **.UF2 firmware file** onto this drive.
+6. The tester will **automatically program, reboot, and run the new firmware**.
 
->> ZIF SOCKET 1 (SK1) - STANDARD 5V <<
-   Use this for all other chips (single +5V supply).
-   * 16-Pin: HM4816 (16K x 1 - 5V only version of a 4116) , (M3732L, M3732H, TMS4532-NL3, TMS4532-NL4 all 32K x 1) , 4164 (64K x 1)
-   * 16-Pin: Continued: - 4128 (128K x 1 - Piggyback), 41256 (256K x 1)
-   * 18-Pin: 4416 (16K x 4), 4464 (64K x 4), 411000 (1M x 1)
-   * 20-Pin: 44256 (256K x 4), 514400 (1M x 4) -(71C4400 etc)
+---
 
->> ZIF SOCKET 2 (SK2) - MULTI-VOLTAGE <<
-   Use this for chips requiring -5V, +5V, and +12V.
-   * 4116 (16K x 1)
-   * MK4027 (4K x 1)
-   * TMS4108 (8K x 1)
+## ⚠️ IMPORTANT POWER WARNING ⚠️
 
-The Main DRAM Test Algorithms
------------------------------
-These are the selectable tests that stress the internal memory cells.
+DO NOT connect the Multi Retro DRAM Tester to USB  
+while it is powered via the 2.1mm DC jack.  
+Use ONE power source only.
 
-March B:
---------
-Type: Standard Industry Algorithm (Finite State Machine).
-Complexity: Low/Medium.
-What it does: Writes 0s to the whole chip. Then walks through reading 0/writing 1, then reading 1/writing 0.
-Best for: Detecting simple "Stuck-at" faults (a bit that is permanently 0 or 1) and some simple coupling faults. Faster than March C-.
+---
 
-March C- (Minus):
------------------
-Type: Standard Industry Algorithm.
-Complexity: High (The "Gold Standard" for DRAM).
-What it does: A complex sequence that walks up and down the memory array, reading and writing inverted data multiple times (e.g., Read 0, Write 1, Read 1, Write 0).
-Best for: Detecting Stuck-at faults, Transition faults (cell fails to change from 0->1 or 1->0), Coupling faults (writing to cell A changes cell B), and Address Decoder faults. This is the recommended default test.
+## OVERVIEW
 
-March C- Mix:
--------------
-Type: Timing Stress Test.
-What it does: Runs the March C- algorithm twice.
-First run: Uses Standard Page Mode (slower, standard timing).
-Second run: Uses Fast Page Mode (FPM) (keeps RAS low, toggles CAS rapidly).
-Best for: Detecting chips that are logically functional but fail when accessed at high speeds (timing violation).
+The **Multi Retro DRAM Tester** is a comprehensive diagnostic tool for vintage **Dynamic RAM (DRAM)** chips spanning from the **1970s (4116)** through to the **1990s (514400)**.
 
-Checkerboard:
--------------
-Type: Leakage Test.
-What it does: Runs the Checkerboard test, and then reads and verifies the data.
-Best for: Detecting Weak Bits. These are cells that work fine immediately, but lose their charge (turn from 1 to 0) faster than the standard refresh cycle allows. Crucial for verifying old/aging chips.
+It is powered by a **dual-core ARM Cortex-M0+ processor**, capable of generating precise DRAM timing signals to accurately verify memory integrity, reliability, and marginal behaviour in aging chips.
 
-Row Retention:
---------------
-Type: True Row Retention: 
-What it does: This test isolates **one specific row**, charges it up, waits for the exact specified time, and checks *only* that row. Then it moves to the next, until all rows have been checked.
-Best for: Detecting "Marginal" or "Weak" Bits
+---
 
-Extreme:
---------
-Type: Composite Suite.
-A selectable composition of all of the above algorithms
+## FAST TEST TIMES
 
-CONFIGURATION OPTIONS
-------------------------
-* LOOPS: Set to '0' for infinite running, or a specific number (e.g., 5).
-* POWER MODE:
-  - ON: DRAM power remains ON after a successful test.
-  - CYCLE: Power is turned OFF and then ON between every loop.
-* ON ERROR:
-  - STOP: Halts immediately when a bad bit is found.
-  - RESTART: Logs the error count and continues to the next loop.
+Optimised test algorithms and selectable access modes allow:
 
-**********************************************************************************************************************************
-PRE-TESTS - It is recommended not to turn any of these tests to the OFF state! - These are only really left in there for my debug!
-**********************************************************************************************************************************
-------------
-These are quick checks run before the main algorithm to save time.
-* Pin Check:
-------------
-What it does: Checks for electrical shorts between pins (e.g., Data shorted to Address) and pins stuck at Ground or VCC.
-Why: Prevents damage to the tester or the chip. If a short is found, the test aborts immediately, before applying power to the DRAM chip, thus protecting the DRAM tester!
+- Rapid screening of known-good chips  
+- Deep stress-testing of marginal devices  
+- Accurate detection of timing-related failures
 
-Wake-up Refresh:
----------------
-What it does: Sends a series of RAS-only pulses to the chip without reading or writing data.
-Why: "Warms up" the internal charge pump of the DRAM. Essential for the chip to behave stably before testing begins.
+## Test Times measured with firmware release V4.08b   
 
-Presence Check:
----------------
-What it does: Writes a '0' and a '1' to specific cells and uses internal Pull-Up/Pull-Down resistors to verify the data bus is actually being driven by a chip.
-Why: Distinguishes between a "Dead Chip" and an "Empty Socket."
-
-Address Sweep:
---------------
-What it does: Walks through address bits (A0, A1, A2...) individually. It writes to a base address and ensures that toggling a specific address bit doesn't affect the original data.
-Why: Detects broken address pins (e.g., if A4 is broken, writing to address 16 might actually overwrite address 0).
-
-Data/WE Check:
---------------
-What it does: Performs a quick write and read verification on a specific cell.
-Why: Confirms the Write Enable (WE) and Data In/Out (DQ) lines are functioning correctly.
+|   DRAM | Memory Configuration | March B | March C- | March B + True Row Retention | Retention Time |
+| -----: | -------------------- | ------: | -------: | ---------------------------: | -------------: |
+|   4027 | 4K × 1               |   39 ms |    57 ms |                       372 ms |           2 ms |
+|   4108 | 8K × 1               |   67 ms |   101 ms |                       666 ms |           2 ms |
+|   4116 | 16K × 1              |  120 ms |   191 ms |                       740 ms |           2 ms |
+|   4816 | 16K × 1              |  120 ms |   191 ms |                       740 ms |           2 ms |
+|   4532 | 32K × 1              |  248 ms |   402 ms |                       1.43 s |           2 ms |
+|   3732 | 32K × 1              |  248 ms |   402 ms |                       1.43 s |           2 ms |
+|   4164 | 64K × 1              |  443 ms |   727 ms |                        2.7 s |           4 ms |
+|   4128 | 128K × 1             |  1.25 s |   2.07 s |                        3.8 s |           4 ms |
+|  41256 | 256K × 1             |  1.96 s |   3.25 s |                        7.8 s |           4 ms |
+|   4416 | 16K × 4              |  197 ms |   320 ms |                        2.4 s |           4 ms |
+|   4464 | 64K × 4              |  750 ms |   1.25 s |                        3.7 s |           4 ms |
+|  44256 | 256K × 4             |     3 s |      5 s |                       10.5 s |           4 ms |
+| 511000 | 1M × 1               |   7.4 s |   12.2 s |                         30 s |           8 ms |
+| 514400 | 1M × 4               |    12 s |     20 s |                         58 s |          16 ms |
 
 
-Here is a brief description of the functions and menus available on The Multi Retro Dram Tester.
-------------------------------------------------------------------------------------------------
+---
 
-1. Main Menu Functions
-----------------------
-Select Chip Type: Allows you to scroll through the supported DRAM models (e.g., 4164, 4116, 514400). This configures the voltages and pinouts automatically.
-Start Test: Initiates the selected test sequence.
-Settings: Opens the detailed configuration menu.
+## SOCKET SELECTION (IMPORTANT!)
 
-2. Test Configuration Settings
-------------------------------
-These options change how the memory test is performed.
+The tester includes **two ZIF sockets**.  
+**Always use the correct socket** to avoid damage to the chip or tester.
 
-Test Algorithm: Selects the specific logic used (March B, March C-, Checkerboard, etc.).
+---
 
-Access Mode:
-------------
-Std Page: Uses standard RAS/CAS timing (compatible with all chips).
+### ▶ ZIF SOCKET 1 (SK1) — STANDARD +5V
 
-Fast Page: Uses Fast Page Mode (RAS stays low, CAS toggles).
+For **single-supply 5V DRAM chips**.
 
-Loop Count:
------------
-1: Runs the test once and stops.
-Infinite (0): Runs forever until you abort.
-Specific (e.g., 10, 100): Runs for a set number of passes.
+**16-Pin**
+- HM4816 (16K×1, 5V-only 4116 variant)
+- M3732L / M3732H (32Kx1)
+- TMS4532-NL3 / NL4 (32K×1)
+- 4164 (64K×1)
+- 4128 (128K×1, piggyback)
+- 41256 (256K×1)
 
-On Error:
----------
-Stop: The tester halts immediately when a bad bit is found.
-Restart: The tester logs the error and immediately restarts the test loop.
-EOT (End of Test) Power:
+**18-Pin**
+- 4416 (16K×4)
+- 4464 (64K×4)
+- 411000 (1M×1)
 
-Power Cycle:
-------------
-Turns the chip off and back on between loops (ensures cold-start capability).
+**20-Pin**
+- 44256 (256K×4)
+- 514400 / 71C4400 (1M×4)
 
-Power On:
----------
-Keeps the chip powered between loops (faster testing).
+---
 
-Retention Time:
----------------
-Presets how long the tester waits during retention tests to detect weak bits that lose charge. 
-DRAM retention time refers to the maximum time that data can be reliably stored in a DRAM cell before it needs to be refreshed.
+### ▶ ZIF SOCKET 2 (SK2) — MULTI-VOLTAGE
 
-Cycle Delay:
-------------
-Sets the pause duration between test loops (e.g., wait 1 second before starting the next pass).
+For **legacy DRAM requiring −5V, +5V, and +12V**.
 
-3. Visual & UI Settings (*** Turn off the Phase Messages for faster testing!***)
------------------------
-Phase Msgs: Toggles the display of specific sub-steps (e.g., "March C- (w0)"). Turning this off speeds up the test slightly.
-Result Size:
-Small: Shows detailed statistics (Address, Expected vs. Actual data).
-Large: Shows a giant "PASS" or "FAIL" for easy viewing from a distance.
+- 4116 (16K×1)
+- MK4027 (4K×1)
+- TMS4108 (8K×1)
 
-4. Advanced & Diagnostic Functions
-----------------------------------
-Extreme Config: A submenu where you can manually enable or disable specific algorithms included in the "Extreme" test suite.
-Pre-Tests: Allows you to toggle safety checks on/off: (highly recommended to keep ON).
-Pin Check: Checks for shorts (highly recommended to keep ON).
-Presence: Checks if a chip is inserted. (highly recommended to keep ON).
-Address Sweep: Checks for broken address pins. (highly recommended to keep ON).
+---
 
-Test Hardware: A diagnostic mode for the tester itself. It allows you to manually toggle specific socket pins High (3.3V) or Low to verify PCB traces with a multimeter. It has two modes:
-Manual: You scroll the knob to select a pin.
-Auto: The tester cycles through pins automatically every second.
+## MAIN DRAM TEST ALGORITHMS
 
-Reset Defaults: Wipes all settings back to factory defaults (except for Encoder Direction).
+Selectable algorithms that stress the internal memory cells in different ways.
 
-5. Controls
------------
-Rotary Scroll: Navigates menus.
-Rotary Button: Depressing the Button Selects an option or toggles a setting.
-Long Press (during test): Aborts the current test immediately and cuts power to the socket.
-Encoder Direction: Via PC command, you can reverse the direction of the knob if it feels "backward" to you.
-Display Driver: Via PC command, toggle between SSD1306 and SH1106 drivers for the OLED display.
+---
 
-TROUBLESHOOTING:
-----------------
-* "OFFLINE": Check USB cable and ensure correct COM port is selected.
+### March B
+
+**Type:** Industry Standard FSM  
+**Complexity:** Low–Medium  
+
+**Description**  
+Writes zeros to the entire array, then performs read/write transitions.
+
+**Best For**
+- Stuck-at faults  
+- Basic coupling faults  
+- Faster screening than March C-  
+
+---
+
+### March C- (Minus)
+
+**Type:** Industry Standard (Gold Standard)  
+**Complexity:** High  
+
+**Description**  
+A bidirectional algorithm that repeatedly reads and writes inverted data patterns.
+
+**Best For**
+- Stuck-at faults  
+- Transition faults  
+- Coupling faults  
+- Address decoder faults  
+
+### March C- Mix
+
+**Type:** Timing Stress Test  
+
+**Description**  
+Runs March C- twice:
+
+1. Standard Page Mode  
+2. Fast Page Mode (RAS held low, CAS toggled rapidly)
+
+**Best For**
+- Detecting chips that fail only under high-speed access  
+
+---
+
+### Checkerboard
+
+**Type:** Leakage / Weak-Bit Test  
+
+**Description**  
+Alternating bit patterns are written, delayed, and verified.
+
+**Best For**
+- Detecting weak or aging memory cells  
+
+---
+
+### Row Retention
+
+**Type:** True Row-by-Row Retention  
+
+**Description**  
+Each row is charged, delayed for an exact time, and verified independently.
+
+**Best For**
+- Identifying marginal or weak retention cells  
+- Accurate retention profiling  
+
+---
+
+### Extreme Mode
+
+**Type:** Composite Test Suite  
+
+**Description**  
+User-configurable combination of multiple algorithms for maximum stress testing.
+
+---
+
+## CONFIGURATION OPTIONS
+
+- **Loops**
+  - `0` = Infinite
+  - Any other value = Fixed count
+
+- **Power Mode**
+  - **ON** — Power remains applied after a pass
+  - **CYCLE** — Power cycles between loops
+
+- **On Error**
+  - **STOP** — Halt immediately
+  - **RESTART** — Log error and continue testing
+
+---
+
+## PRE-TESTS (SAFETY CHECKS)
+
+⚠️ **Strongly recommended to keep ALL enabled**  
+These exist primarily for developer diagnostics.
+
+---
+
+### Pin Check
+
+Detects shorts, stuck pins, and illegal connections **before power is applied**.
+
+---
+
+### Wake-Up Refresh
+
+Applies RAS-only refresh pulses to stabilise internal charge pumps.
+
+---
+
+### Presence Check
+
+Determines whether a DRAM chip is present and actively driving the bus.
+
+---
+
+### Address Sweep
+
+Detects broken or shorted address lines.
+
+---
+
+### Data / WE Check
+
+Verifies data and write-enable signal integrity.
+
+---
+
+## MENU SYSTEM OVERVIEW
+
+### Main Menu
+
+- **Select Chip Type**  
+- **Start Test**  
+- **Settings**  
+
+---
+
+### Test Settings
+
+- Test Algorithm  
+- Access Mode (Standard / Fast Page)  
+- Loop Count  (1, 2, 3 , 4, 5 .... to INFINITY)
+- On Error Behaviour  (Stop or Restart)
+- End-of-Test Power Mode  (Power ON / Power Cycle)
+- Retention Time  (Allows the user to change the default Retention Time)
+- Cycle Delay (Time betweeen cyclic/loop tests)
+
+---
+
+### Visual & UI Settings
+
+⚡ *Disable Phase Messages for fastest testing*
+
+- Phase Messages ON / OFF  (Shows the current test being carried out)
+- Result Display Size (Small / Large)  (Small - detailed fault report Large - Large FAIL message)
+
+---
+
+### Advanced & Diagnostics
+
+- Extreme Test Configuration  (Allows the user to select a combination of tests)
+- Pre-Test Controls  
+- Hardware Pin Test (Manual / Auto) 
+- Reset Defaults  
+
+---
+
+## CONTROLS
+
+- **Rotary Scroll:** Navigate menus  
+- **Rotary Press:** Select / Toggle  
+- **Long Press (during test):** Abort test and cut power  
+
+**PC Commands**
+- Reverse encoder direction  
+- Toggle SSD1306 / SH1106 OLED driver  
+
+---
+
+## TROUBLESHOOTING
+
+**“OFFLINE” Message**
+- Check USB cable  
+- Verify correct COM port selection  
+
+---
